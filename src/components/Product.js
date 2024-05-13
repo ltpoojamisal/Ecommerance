@@ -9,7 +9,7 @@ import { selectcustId } from '../store/slice/UserSclice.js';
 
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
-function Product(props) {
+function Product() {
     const{categoryId}=useParams();
     const dispatch = useDispatch();
     const custId = useSelector(selectcustId);

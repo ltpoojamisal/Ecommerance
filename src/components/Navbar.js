@@ -7,18 +7,24 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Button, Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { login, logout, selectcustId, selectIsLoggedIn, selectCartProducts } from "../store/slice/UserSclice.js";
+import { login, logout, selectcustId, selectIsLoggedIn, selectCartProducts,selectCustomerObj } from "../store/slice/UserSclice.js";
 const Navbar = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const cartProducts = useSelector(selectCartProducts)
-    const custId = useSelector(selectcustId);
+    // const custId = useSelector(selectcustId);
+    const loginIbj=useSelector(selectCustomerObj);
+    const custId=loginIbj.custId;
     const isLoggedIn = useSelector(selectIsLoggedIn);
     const [categoryList, setCategoryList] = useState([]);
     const [registeModal, setRegisteModal] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const loginobj={
+        userName:username,
+        userPassword:password,
+    }
 
     const [cusObj, setCustObj] = useState({
         "custId": 0,
@@ -66,20 +72,23 @@ const Navbar = () => {
     const handleLogin = async () => {
         debugger;
         try {
-            const result = await axios.get("https://freeapi.gerasim.in/api/BigBasket/GetAllCustomer");
-            if (result.data.data != undefined) {
-                const users = result.data.data;
-                const isUserPresent = users.find(user => user.name === username && user.password === password);
-                if (isUserPresent) {
-                    const { custId } = isUserPresent;
-                    dispatch(login(JSON.stringify(isUserPresent)));
-                    dispatch(login({ custId: custId }));
-                    dispatch(fetchCartProducts(custId));
+        
+            const result = await axios.post("https://freeapi.gerasim.in/api/BigBasket/Login",loginobj);
+            if (result.data.result) {
+                // const users = result.data.data;
+                // const isUserPresent = users.find(user => user.name === username && user.password === password);
+                // if (isUserPresent) {
+                ///   const { custId } = isUserPresent;
+
+                   dispatch(login(result.data.data));
+                   // const { custId }=result.data.data.custId;
+                  //  dispatch(login({ custId: result.data.data.custId }));
+                    dispatch(fetchCartProducts(result.data.data.custId));
                     setShowModal(false);
-                } else {
-                    alert("Invalid username or password.");
-                }
-            }
+            //     } else {
+            //         alert("Invalid username or password.");
+            //     }
+             }
         } catch (error) {
             console.log(error)
             alert("Invalid username or password.");
@@ -202,7 +211,7 @@ const Navbar = () => {
                             {
                                 isLoggedIn ? (<div className="nav-item dropdown">
                                     <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <FontAwesomeIcon icon={faUser} />  {username}
+                                        <FontAwesomeIcon icon={faUser} />  {loginIbj.name}
                                     </a>
                                     <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                         <li >
