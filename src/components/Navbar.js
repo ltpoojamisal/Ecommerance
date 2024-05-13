@@ -7,23 +7,23 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Button, Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { login, logout, selectcustId, selectIsLoggedIn, selectCartProducts,selectCustomerObj } from "../store/slice/UserSclice.js";
+import { login, logout, selectcustId, selectIsLoggedIn, selectCartProducts, selectCustomerObj } from "../store/slice/UserSclice.js";
 const Navbar = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const cartProducts = useSelector(selectCartProducts)
     // const custId = useSelector(selectcustId);
-    const loginIbj=useSelector(selectCustomerObj);
-    const custId=loginIbj.custId;
+    const loginIbj = useSelector(selectCustomerObj);
+    const custId = loginIbj.custId;
     const isLoggedIn = useSelector(selectIsLoggedIn);
     const [categoryList, setCategoryList] = useState([]);
     const [registeModal, setRegisteModal] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const loginobj={
-        userName:username,
-        userPassword:password,
+    const loginobj = {
+        userName: username,
+        userPassword: password,
     }
 
     const [cusObj, setCustObj] = useState({
@@ -72,23 +72,15 @@ const Navbar = () => {
     const handleLogin = async () => {
         debugger;
         try {
-        
-            const result = await axios.post("https://freeapi.gerasim.in/api/BigBasket/Login",loginobj);
-            if (result.data.result) {
-                // const users = result.data.data;
-                // const isUserPresent = users.find(user => user.name === username && user.password === password);
-                // if (isUserPresent) {
-                ///   const { custId } = isUserPresent;
 
-                   dispatch(login(result.data.data));
-                   // const { custId }=result.data.data.custId;
-                  //  dispatch(login({ custId: result.data.data.custId }));
-                    dispatch(fetchCartProducts(result.data.data.custId));
-                    setShowModal(false);
-            //     } else {
-            //         alert("Invalid username or password.");
-            //     }
-             }
+            const result = await axios.post("https://freeapi.gerasim.in/api/BigBasket/Login", loginobj);
+            if (result.data.result) {
+
+                dispatch(login(result.data.data));
+                dispatch(fetchCartProducts(result.data.data.custId));
+                setShowModal(false);
+
+            }
         } catch (error) {
             console.log(error)
             alert("Invalid username or password.");
@@ -172,7 +164,7 @@ const Navbar = () => {
                             </div>
                             {
                                 isLoggedIn ? <div className="nav-item dropdown" >
-                                    <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"  aria-expanded="false">
+                                    <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         <FontAwesomeIcon icon={faCartShopping} className="me-2" />{cartProducts.length}
                                     </a>
                                     <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown" style={{ maxHeight: '500px', overflowY: 'auto' }}>
@@ -180,7 +172,7 @@ const Navbar = () => {
                                             <li key={cartItem.productId}>
                                                 <Link className="dropdown-item" to={'/'} >
                                                     {/* {cartItem.productName} - Quantity: {cartItem.quantity} */}
-                                                    <div key={cartItem.productId} className="border-top d-flex mt-2 " style={{width:"200px"}}>
+                                                    <div key={cartItem.productId} className="border-top d-flex mt-2 " style={{ width: "200px" }}>
                                                         <img className="img-fluid h-25 w-25 p-2" src={cartItem.productImageUrl} alt="" />
                                                         <div className="ps-3">
                                                             <p className="p-0 m-0 fw-semibold"><b>{cartItem.productName}</b></p>
@@ -190,7 +182,7 @@ const Navbar = () => {
 
                                                         </div>
                                                     </div>
-      
+
                                                 </Link>
                                             </li>
                                         ))}
@@ -199,7 +191,7 @@ const Navbar = () => {
 
                                     </ul>
                                 </div> : <div className="nav-item">
-                                    <a className="nav-link "  id="navbarDropdown"   aria-expanded="false">
+                                    <a className="nav-link " id="navbarDropdown" aria-expanded="false">
                                         <FontAwesomeIcon icon={faCartShopping} className="me-2" />
                                     </a>
 
@@ -242,7 +234,7 @@ const Navbar = () => {
             <div className="row">
                 <div className="col-12">
                     <Modal show={showModal} onHide={closeModalLogin}>
-                        <Modal.Header closeButton className="bg-light">
+                        <Modal.Header closeButton className="bg-primary text-white">
                             <Modal.Title>Login</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
@@ -287,8 +279,8 @@ const Navbar = () => {
             <div className="row">
                 <div className="col-12">
                     <Modal show={registeModal} onHide={closeModalregister}>
-                        <Modal.Header closeButton className="bg-light">
-                            <Modal.Title>Login</Modal.Title>
+                        <Modal.Header closeButton className="bg-primary text-white">
+                            <Modal.Title>Register</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
                             <div>

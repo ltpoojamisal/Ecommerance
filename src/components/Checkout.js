@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {selectcustId,removeItemFromCart } from "../store/slice/UserSclice.js";
+import {selectcustId,selectCustomerObj} from "../store/slice/UserSclice.js";
 import { useSelector ,useDispatch} from 'react-redux';
 import{fetchCartProducts,selectCartProducts} from '../store/slice/UserSclice.js'
 import axios from 'axios';
@@ -8,7 +8,8 @@ import { useNavigate } from "react-router-dom";
 function Checkout() {
     //debugger
     const cartItems = useSelector(selectCartProducts);
-    const custId = useSelector(selectcustId);
+    const custObj = useSelector(selectCustomerObj);
+    const custId=custObj.custId;
     const navigate = useNavigate();
     const dispatch = useDispatch();
     

@@ -5,14 +5,15 @@ import { faBagShopping } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { fetchCartProducts } from '../store/slice/UserSclice.js'
 import { useDispatch, useSelector } from 'react-redux';
-import { selectcustId } from '../store/slice/UserSclice.js';
+import { selectcustId ,selectCustomerObj} from '../store/slice/UserSclice.js';
 
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
 function Product() {
     const{categoryId}=useParams();
     const dispatch = useDispatch();
-    const custId = useSelector(selectcustId);
+    const custObj = useSelector(selectCustomerObj);
+    const custId=custObj.custId;
 
     const isLoggedIn = useSelector(state => state.user.isLoggedIn);
 

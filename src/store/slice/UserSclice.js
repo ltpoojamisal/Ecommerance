@@ -35,13 +35,11 @@ export const userSlice = createSlice({
   name: 'user',
   initialState: {
     isLoggedIn: false,
-    custId: null,
     custObj:{} ,
   },
   reducers: {
     login: (state, action) => { 
       state.isLoggedIn = true;
-      state.custId = action.payload.custId;
       state.custObj=action.payload;
     },
     logout: state => {
@@ -56,7 +54,6 @@ export const userSlice = createSlice({
 export const selectCartProducts = (state) => state.custcartSlice.cartProducts;
 export const { login, logout } = userSlice.actions;
 export const selectIsLoggedIn = state => state.user.isLoggedIn;
-export const selectcustId = state => state.user.custId;
 export const selectCustomerObj=state => state.user.custObj;
 export const rootReducer = {
   user: userSlice.reducer,
