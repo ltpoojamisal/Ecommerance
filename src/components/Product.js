@@ -58,9 +58,9 @@ useEffect(()=>{
                 if (response.data.result) {
 
                     dispatch(fetchCartProducts(custId));
-                    alert('Item added to cart!');
+                    toast.success('Item added to cart!');
                 } else {
-                    alert('Item Alreday present ');
+                    toast.warning('Item Alreday present ');
                 }
             } catch (error) {
 

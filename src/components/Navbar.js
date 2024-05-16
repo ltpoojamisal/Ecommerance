@@ -2,12 +2,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { fetchCartProducts } from '../store/slice/UserSclice.js'
 import '../services/main.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCartShopping, faUser, faTrash,faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faCartShopping, faUser, faTrash, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Button, Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { login, logout, selectcustId, selectIsLoggedIn, selectCartProducts, selectCustomerObj } from "../store/slice/UserSclice.js";
+import { toast } from "react-toastify";
 const Navbar = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -19,6 +20,7 @@ const Navbar = () => {
     const [categoryList, setCategoryList] = useState([]);
     const [registeModal, setRegisteModal] = useState(false);
     const [showModal, setShowModal] = useState(false);
+    const[VshowModal,setVshowModal]=useState(false);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const loginobj = {
@@ -43,6 +45,7 @@ const Navbar = () => {
             }
         } catch (error) {
             console.error("Error fetching category list:", error);
+            toast.error(error);
         }
 
     }
@@ -52,7 +55,8 @@ const Navbar = () => {
         debugger;
         const response = await axios.get("https://freeapi.gerasim.in/api/BigBasket/DeleteProductFromCartById?id=" + product.cartId);
         if (response.data.result) {
-            alert("cart deleted");
+          //  alert("cart deleted");
+            toast.success(response.data.message)
             dispatch(fetchCartProducts(custId));
         }
         else {
@@ -81,9 +85,14 @@ const Navbar = () => {
                 setShowModal(false);
 
             }
+            else
+            {
+                toast.error("Type mobile no and password both.")
+            }
         } catch (error) {
             console.log(error)
-            alert("Invalid username or password.");
+            alert("Invalid Mobile or password.");
+            toast.error("Invalid mobile or password.")
         }
 
     };
@@ -115,6 +124,13 @@ const Navbar = () => {
     const closeModalregister = () => {
         setRegisteModal(false);
     }
+    /******** handle modal View Cart */
+    const viewCart=()=>{
+        setVshowModal(true);
+    }
+    const closeViewCart=()=>{
+        setVshowModal(false)
+    }
 
     const registerUser = (event, key) => {
         setCustObj(prev => ({ ...prev, [key]: event.target.value }));
@@ -124,11 +140,13 @@ const Navbar = () => {
         try {
             const response = await axios.post("https://freeapi.gerasim.in/api/BigBasket/RegisterCustomer", cusObj);
             if (response.data.result) {
-                alert("Register Successfully");
+               // alert("Register Successfully");
+                toast.success("Register Successfully")
                 closeModalregister();
             }
             else {
-                alert("Failed to register")
+                toast.error("Failed to register")
+
             }
         }
         catch (error) {
@@ -172,7 +190,7 @@ const Navbar = () => {
                                             <li key={cartItem.productId}>
                                                 <Link className="dropdown-item" to={'/'} >
                                                     {/* {cartItem.productName} - Quantity: {cartItem.quantity} */}
-                                                    {/* <div key={cartItem.productId} className="border-top d-flex mt-2 " style={{ width: "200px" }}>
+                                        {/* <div key={cartItem.productId} className="border-top d-flex mt-2 " style={{ width: "200px" }}>
                                                         <img className="img-fluid h-25 w-25 p-2" src={cartItem.productImageUrl} alt="" />
                                                         <div className="ps-3">
                                                             <p className="p-0 m-0 fw-semibold"><b>{cartItem.productName}</b></p>
@@ -185,28 +203,28 @@ const Navbar = () => {
 
                                                 </Link>
                                             </li>
-                                        ))} */} 
-                                         {(cartProducts && cartProducts.length > 0) && cartProducts.map(cartItem => (
-                                        <li key={cartItem.productId} className="p-2">
-                                            <div className="d-flex border-bottom justify-content-between align-items-center">
-                                                <img className="image-fluid" src={cartItem.productImageUrl} alt="" style={{ width: '50px', height: '50px' }}/>
-                                                <div>
-                                                    <a href="#" className="text-decoration-none text-black fw-semibold">
-                                                        <p className="m-0 p-0">{cartItem.productShortName}</p>
-                                                    </a>
-                                                    <p>{cartItem.quantity} * <i className="fa-solid fa-xmark" style={{ color: '#0d0d0d' }} ></i> ${cartItem.productPrice}</p>
+                                        ))} */}
+                                        {(cartProducts && cartProducts.length > 0) && cartProducts.map(cartItem => (
+                                            <li key={cartItem.productId} className="p-2">
+                                                <div className="d-flex border-bottom justify-content-between align-items-center">
+                                                    <img className="image-fluid" src={cartItem.productImageUrl} alt="" style={{ width: '50px', height: '50px' }} />
+                                                    <div>
+                                                        <a href="#" className="text-decoration-none text-black fw-semibold">
+                                                            <p className="m-0 p-0">{cartItem.productShortName}</p>
+                                                        </a>
+                                                        <p>{cartItem.quantity} * <i className="fa-solid fa-xmark" style={{ color: '#0d0d0d' }} ></i> ${cartItem.productPrice}</p>
+                                                    </div>
+                                                    <button type="button" className="btn fs-5 closeBtn" onClick={() => deleteCart(cartItem)}>
+                                                        <FontAwesomeIcon icon={faTimes} />
+                                                    </button>
                                                 </div>
-                                                <button type="button" className="btn fs-5 closeBtn" onClick={() => deleteCart(cartItem)}>
-                                                    <FontAwesomeIcon icon={faTimes} />
-                                                </button>
-                                            </div>
-                                        </li>
-                                    ))}
+                                            </li>
+                                        ))}
                                         {/* <Button className="btn btn-secondary form control" >View Cart</Button>
                                         <Button className="btn btn-success form control" onClick={() => { showCheckout() }}>Checkout</Button> */}
                                         <div className="d-flex justify-content-evenly mt-2">
-                                            <button className="btn btn-dark rounded-0 px-3">View Cart</button>
-                                            <button className="btn btn-danger rounded-0 px-3" ><a className="text-decoration-none text-black" href="#"  onClick={() => { showCheckout() }}>Checkout</a></button>
+                                            <button className="btn btn-dark rounded-0 px-3" onClick={viewCart}>View Cart</button>
+                                            <button className="btn btn-danger rounded-0 px-3" ><a className="text-decoration-none text-black" href="#" onClick={() => { showCheckout() }}>Checkout</a></button>
                                         </div>
                                     </ul>
                                 </div> : <div className="nav-item">
@@ -263,7 +281,7 @@ const Navbar = () => {
                                         <div className="row">
 
                                             <div className='col-12'>
-                                                <label>User Name</label>
+                                                <label>Mobile No</label>
                                                 <input type="text" className='form-control' onChange={(e) => { handleuserlogin(e) }} />
 
                                             </div>
@@ -344,6 +362,34 @@ const Navbar = () => {
                 </div>
             </div>
 
+            <div className="row">
+                <div className="col-12">
+                    <Modal show={VshowModal} onHide={closeViewCart}>
+                        <Modal.Header closeButton className="bg-primary text-white">
+                            <Modal.Title>Carts Added</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <div class="col-lg-12 col-md-6">
+                                    <div class="card-body">
+
+
+                                        {cartProducts.map((cartItem) => (
+                                            <div key={cartItem.productId} className="border-top d-flex mt-2">
+                                                <img className="img-fluid h-40 w-50 p-2" src={cartItem.productImageUrl} alt="" />
+                                                <div className="ps-3">
+                                                    <p className="p-0 m-0 fw-semibold"><b>{cartItem.productName}</b></p>
+                                                    <p className="p-0 m-0">Price: {cartItem.productPrice}</p>
+                                                    <p className="text-start mt-4"><button className="btn">QTY : <b>{cartItem.quantity}</b> </button></p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            
+                        </Modal.Body>
+                    </Modal>
+                </div>
+            </div>
 
 
         </>
