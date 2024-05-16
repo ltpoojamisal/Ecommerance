@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { fetchCartProducts } from '../store/slice/UserSclice.js'
 import '../services/main.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCartShopping, faUser, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faCartShopping, faUser, faTrash,faTimes } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Button, Modal } from "react-bootstrap";
@@ -168,11 +168,11 @@ const Navbar = () => {
                                         <FontAwesomeIcon icon={faCartShopping} className="me-2" />{cartProducts.length}
                                     </a>
                                     <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown" style={{ maxHeight: '500px', overflowY: 'auto' }}>
-                                        {(cartProducts && cartProducts.length > 0) && cartProducts.map(cartItem => (
+                                        {/* {(cartProducts && cartProducts.length > 0) && cartProducts.map(cartItem => (
                                             <li key={cartItem.productId}>
                                                 <Link className="dropdown-item" to={'/'} >
                                                     {/* {cartItem.productName} - Quantity: {cartItem.quantity} */}
-                                                    <div key={cartItem.productId} className="border-top d-flex mt-2 " style={{ width: "200px" }}>
+                                                    {/* <div key={cartItem.productId} className="border-top d-flex mt-2 " style={{ width: "200px" }}>
                                                         <img className="img-fluid h-25 w-25 p-2" src={cartItem.productImageUrl} alt="" />
                                                         <div className="ps-3">
                                                             <p className="p-0 m-0 fw-semibold"><b>{cartItem.productName}</b></p>
@@ -185,10 +185,29 @@ const Navbar = () => {
 
                                                 </Link>
                                             </li>
-                                        ))}
-                                        <Button className="btn btn-secondary form control" >View Cart</Button>
-                                        <Button className="btn btn-success form control" onClick={() => { showCheckout() }}>Checkout</Button>
-
+                                        ))} */} 
+                                         {(cartProducts && cartProducts.length > 0) && cartProducts.map(cartItem => (
+                                        <li key={cartItem.productId} className="p-2">
+                                            <div className="d-flex border-bottom justify-content-between align-items-center">
+                                                <img className="image-fluid" src={cartItem.productImageUrl} alt="" style={{ width: '50px', height: '50px' }}/>
+                                                <div>
+                                                    <a href="#" className="text-decoration-none text-black fw-semibold">
+                                                        <p className="m-0 p-0">{cartItem.productShortName}</p>
+                                                    </a>
+                                                    <p>{cartItem.quantity} * <i className="fa-solid fa-xmark" style={{ color: '#0d0d0d' }} ></i> ${cartItem.productPrice}</p>
+                                                </div>
+                                                <button type="button" className="btn fs-5 closeBtn" onClick={() => deleteCart(cartItem)}>
+                                                    <FontAwesomeIcon icon={faTimes} />
+                                                </button>
+                                            </div>
+                                        </li>
+                                    ))}
+                                        {/* <Button className="btn btn-secondary form control" >View Cart</Button>
+                                        <Button className="btn btn-success form control" onClick={() => { showCheckout() }}>Checkout</Button> */}
+                                        <div className="d-flex justify-content-evenly mt-2">
+                                            <button className="btn btn-dark rounded-0 px-3">View Cart</button>
+                                            <button className="btn btn-danger rounded-0 px-3" ><a className="text-decoration-none text-black" href="#"  onClick={() => { showCheckout() }}>Checkout</a></button>
+                                        </div>
                                     </ul>
                                 </div> : <div className="nav-item">
                                     <a className="nav-link " id="navbarDropdown" aria-expanded="false">
