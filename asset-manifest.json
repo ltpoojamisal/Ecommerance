@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/ecommeranceapp/static/css/main.9951804f.css",
-    "main.js": "/ecommeranceapp/static/js/main.081e9543.js",
+    "main.js": "/ecommeranceapp/static/js/main.2b7ae357.js",
     "static/js/453.2bfab704.chunk.js": "/ecommeranceapp/static/js/453.2bfab704.chunk.js",
     "static/media/logo.svg": "/ecommeranceapp/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/ecommeranceapp/index.html",
     "main.9951804f.css.map": "/ecommeranceapp/static/css/main.9951804f.css.map",
-    "main.081e9543.js.map": "/ecommeranceapp/static/js/main.081e9543.js.map",
+    "main.2b7ae357.js.map": "/ecommeranceapp/static/js/main.2b7ae357.js.map",
     "453.2bfab704.chunk.js.map": "/ecommeranceapp/static/js/453.2bfab704.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.9951804f.css",
-    "static/js/main.081e9543.js"
+    "static/js/main.2b7ae357.js"
   ]
 }
