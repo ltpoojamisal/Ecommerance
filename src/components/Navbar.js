@@ -21,11 +21,18 @@ const Navbar = () => {
     const [registeModal, setRegisteModal] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const[VshowModal,setVshowModal]=useState(false);
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const loginobj = {
-        userName: username,
-        userPassword: password,
+    
+
+const[loginobj,setLoginObj]=useState({
+    userName: "",
+        userPassword: "",
+})
+    // const loginobj = {
+    //     userName: username,
+    //     userPassword: password,
+    // }
+    const getLoginObj =(event,key)=>{
+        setLoginObj(prev=>({...prev,[key]:event.target.value}))
     }
 
     const [cusObj, setCustObj] = useState({
@@ -65,13 +72,7 @@ const Navbar = () => {
     }
 
 
-    /*********** Read Username and Password */
-    const handleuserlogin = (e) => {
-        setUsername(e.target.value)
-    }
-    const handlePassword = (e) => {
-        setPassword(e.target.value)
-    }
+   
     /*********** Login ************* */
     const handleLogin = async () => {
         debugger;
@@ -80,6 +81,7 @@ const Navbar = () => {
             const result = await axios.post("https://freeapi.gerasim.in/api/BigBasket/Login", loginobj);
             if (result.data.result) {
 
+                toast.success("Login Successfully")
                 dispatch(login(result.data.data));
                 dispatch(fetchCartProducts(result.data.data.custId));
                 setShowModal(false);
@@ -87,17 +89,19 @@ const Navbar = () => {
             }
             else
             {
-                toast.error("Type mobile no and password both.")
+                toast.error(result.data.message)
             }
         } catch (error) {
-            console.log(error)
-            alert("Invalid Mobile or password.");
-            toast.error("Invalid mobile or password.")
+            toast.error("please enter correct mobile no and passeord")
         }
 
     };
     /********** Log out***********8 */
     const handleLogout = () => {
+        setLoginObj( {
+            userName: "",
+            userPassword: "",
+        });
         navigate("/product")
         dispatch(logout());
 
@@ -282,7 +286,7 @@ const Navbar = () => {
 
                                             <div className='col-12'>
                                                 <label>Mobile No</label>
-                                                <input type="text" className='form-control' onChange={(e) => { handleuserlogin(e) }} />
+                                                <input type="text" className='form-control' onChange={(e) => { getLoginObj(e,'userName') }} />
 
                                             </div>
                                         </div>
@@ -292,7 +296,7 @@ const Navbar = () => {
                                                 <input
                                                     type="password"
                                                     className="form-control"
-                                                    onChange={(e) => { handlePassword(e) }}
+                                                    onChange={(e) => { getLoginObj(e,'userPassword') }}
                                                 />
 
                                             </div>

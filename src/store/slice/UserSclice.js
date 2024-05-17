@@ -44,7 +44,7 @@ export const userSlice = createSlice({
     },
     logout: state => {
       state.isLoggedIn = false;
-      state.custId = null;
+      state.custObj = {};
     },
   },
 });
