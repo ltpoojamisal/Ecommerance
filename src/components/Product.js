@@ -72,7 +72,11 @@ useEffect(()=>{
         }
     };
     useEffect(() => {
-        dispatch(fetchCartProducts(custId));
+        if(custId!=undefined)
+            {
+                dispatch(fetchCartProducts(custId));
+            }
+       
     }, [dispatch, custId]);
     /************ Product List*********** */
     const [productlist, setProductList] = useState([]);

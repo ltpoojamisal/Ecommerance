@@ -11,7 +11,7 @@ import Checkout from './components/Checkout';
 
 function App() {
   return (
-    <div className="">
+    <div className="App">
       <ToastContainer
       position="top-center"
       autoClose={1000}

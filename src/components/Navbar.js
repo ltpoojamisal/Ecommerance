@@ -27,10 +27,7 @@ const[loginobj,setLoginObj]=useState({
     userName: "",
         userPassword: "",
 })
-    // const loginobj = {
-    //     userName: username,
-    //     userPassword: password,
-    // }
+
     const getLoginObj =(event,key)=>{
         setLoginObj(prev=>({...prev,[key]:event.target.value}))
     }
@@ -42,7 +39,11 @@ const[loginobj,setLoginObj]=useState({
         "password": ""
     })
     useEffect(() => {
-        dispatch(fetchCartProducts(custId));
+        if(custId!=undefined)
+            {
+                dispatch(fetchCartProducts(custId));
+            }
+        
     }, [dispatch, custId]);
     const getCategoryList = async () => {
         try {
@@ -62,7 +63,7 @@ const[loginobj,setLoginObj]=useState({
         debugger;
         const response = await axios.get("https://freeapi.gerasim.in/api/BigBasket/DeleteProductFromCartById?id=" + product.cartId);
         if (response.data.result) {
-          //  alert("cart deleted");
+        
             toast.success(response.data.message)
             dispatch(fetchCartProducts(custId));
         }
@@ -70,9 +71,6 @@ const[loginobj,setLoginObj]=useState({
 
         }
     }
-
-
-   
     /*********** Login ************* */
     const handleLogin = async () => {
         debugger;
@@ -144,7 +142,6 @@ const[loginobj,setLoginObj]=useState({
         try {
             const response = await axios.post("https://freeapi.gerasim.in/api/BigBasket/RegisterCustomer", cusObj);
             if (response.data.result) {
-               // alert("Register Successfully");
                 toast.success("Register Successfully")
                 closeModalregister();
             }
@@ -179,7 +176,7 @@ const[loginobj,setLoginObj]=useState({
                                     {categoryList.map(category => (
                                         <li key={category.categoryId}>
                                             <Link className="dropdown-item" to={`/product/${category.categoryId}`}>{category.categoryName}</Link>
-                                            {/* <Link className="dropdown-item">{category.categoryName}</Link> */}
+                                            
                                         </li>
                                     ))}
                                 </ul>
@@ -190,24 +187,7 @@ const[loginobj,setLoginObj]=useState({
                                         <FontAwesomeIcon icon={faCartShopping} className="me-2" />{cartProducts.length}
                                     </a>
                                     <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown" style={{ maxHeight: '500px', overflowY: 'auto' }}>
-                                        {/* {(cartProducts && cartProducts.length > 0) && cartProducts.map(cartItem => (
-                                            <li key={cartItem.productId}>
-                                                <Link className="dropdown-item" to={'/'} >
-                                                    {/* {cartItem.productName} - Quantity: {cartItem.quantity} */}
-                                        {/* <div key={cartItem.productId} className="border-top d-flex mt-2 " style={{ width: "200px" }}>
-                                                        <img className="img-fluid h-25 w-25 p-2" src={cartItem.productImageUrl} alt="" />
-                                                        <div className="ps-3">
-                                                            <p className="p-0 m-0 fw-semibold"><b>{cartItem.productName}</b></p>
-                                                            <p className="p-0 m-0">Price: {cartItem.productPrice}</p>
-                                                            <p className="text-start"><button className="btn">QTY : <b>{cartItem.quantity}</b> </button></p>
-                                                            <Button onClick={() => { deleteCart(cartItem) }}> <FontAwesomeIcon icon={faTrash} className="sm-2" /></Button>
-
-                                                        </div>
-                                                    </div>
-
-                                                </Link>
-                                            </li>
-                                        ))} */}
+                                        
                                         {(cartProducts && cartProducts.length > 0) && cartProducts.map(cartItem => (
                                             <li key={cartItem.productId} className="p-2">
                                                 <div className="d-flex border-bottom justify-content-between align-items-center">
@@ -224,9 +204,7 @@ const[loginobj,setLoginObj]=useState({
                                                 </div>
                                             </li>
                                         ))}
-                                        {/* <Button className="btn btn-secondary form control" >View Cart</Button>
-                                        <Button className="btn btn-success form control" onClick={() => { showCheckout() }}>Checkout</Button> */}
-                                        <div className="d-flex justify-content-evenly mt-2">
+                                       <div className="d-flex justify-content-evenly mt-2">
                                             <button className="btn btn-dark rounded-0 px-3" onClick={viewCart}>View Cart</button>
                                             <button className="btn btn-danger rounded-0 px-3" ><a className="text-decoration-none text-black" href="#" onClick={() => { showCheckout() }}>Checkout</a></button>
                                         </div>
@@ -304,7 +282,7 @@ const[loginobj,setLoginObj]=useState({
                                         </div>
                                         <div className="row">
                                             <div className="col-6">
-                                                <Button className="btn btn-primary form-control" onClick={handleLogin}>Login</Button>
+                                                <Button className="btn btn-success form-control" onClick={handleLogin}>Login</Button>
                                             </div>
                                             <div className="col-6">
                                                 <Button className="btn btn-secondary form-control">Reset</Button>
@@ -352,7 +330,7 @@ const[loginobj,setLoginObj]=useState({
                                         </div>
                                         <div className="row">
                                             <div className="col-6">
-                                                <Button className="btn btn-primary form-control" onClick={handleregister}>Save</Button>
+                                                <Button className="btn btn-success form-control" onClick={handleregister}>Save</Button>
                                             </div>
                                             <div className="col-6">
                                                 <Button className="btn btn-secondary form-control">Reset</Button>
